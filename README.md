@@ -66,6 +66,9 @@ source .venv/bin/activate  # On macOS/Linux
 | **mcp-server-deepdive-deployment** | Deployable MCP server package | 3.11+ | mcp[cli] |
 | **mcp-server-deepdive-functionality** | MCP server with extended functionality | 3.11+ | mcp[cli], pillow, pyautogui, requests |
 | **mcp-server-http-streamable-updated** | HTTP streamable MCP server | 3.11+ | mcp[cli] |
+| **mcp-build-chess** | Chess.com API MCP server with player stats | 3.10+ | mcp[cli], requests |
+| **mcp-build-memory-tracker** | Vector store memory management with OpenAI | 3.10+ | mcp[cli], openai |
+| **mcp-build-client-agent-airbnb-memory** | Multi-server MCP client with Airbnb & memory | 3.10+ | mcp[cli], openai, streamlit |
 
 ## 🚀 Running the Projects
 
@@ -184,6 +187,77 @@ uv run python server.py
 uv run python main.py
 ```
 
+### 8. mcp-build-chess
+
+MCP server that provides access to Chess.com player data through the public API.
+
+```bash
+cd mcp-build-chess
+uv sync
+
+# Install the package in development mode
+uv pip install -e .
+
+# Run using the installed command
+chess
+
+# Or run with PYTHONPATH
+$env:PYTHONPATH="src"  # Windows PowerShell
+uv run python -m chess.server
+```
+
+**Key Features:**
+- Get Chess.com player profiles
+- Retrieve player statistics (ratings, wins, losses)
+- FastMCP integration
+- See detailed README in `mcp-build-chess/` folder
+
+### 9. mcp-build-memory-tracker
+
+MCP server with OpenAI vector store integration for memory management.
+
+```bash
+cd mcp-build-memory-tracker
+uv sync
+
+# Create .env file with your OpenAI API key
+echo "OPENAI_API_KEY=your_api_key_here" > .env
+
+# Run the server
+uv run python server.py
+```
+
+**Key Features:**
+- Save memories to OpenAI vector store
+- Search memories using semantic search
+- Persistent memory storage
+- OpenAI integration
+
+### 10. mcp-build-client-agent-airbnb-memory
+
+Advanced MCP client that connects to multiple MCP servers simultaneously (Airbnb API + Memory server).
+
+```bash
+cd mcp-build-client-agent-airbnb-memory
+uv sync
+
+# Create .env file with your OpenAI API key
+echo "OPENAI_API_KEY=your_api_key_here" > .env
+
+# Run the client
+uv run python client.py
+
+# Or run the Streamlit UI
+uv run streamlit run chat_ui.py
+```
+
+**Key Features:**
+- Multi-server MCP client architecture
+- Integrates Airbnb search with memory storage
+- Streamlit-based chat interface
+- OpenAI function calling
+- Demonstrates advanced MCP patterns
+
 ## 📖 Project Details
 
 ### client
@@ -267,6 +341,63 @@ Modern HTTP-based MCP server with streaming support.
 **Key Files:**
 - `server.py` - HTTP server implementation
 - `main.py` - Server entry point
+
+### mcp-build-chess
+Chess.com API integration server that retrieves player profiles and statistics.
+
+**Key Files:**
+- `src/chess/server.py` - Main MCP server with FastMCP
+- `src/chess/chess_api.py` - Chess.com API client
+- `README.md` - Comprehensive documentation
+
+**Tools:**
+- `get_chess_player_profile` - Get player profile info
+- `get_chess_player_stats` - Get detailed game statistics
+
+**API Integration:**
+Uses Chess.com Public API (no authentication required)
+
+### mcp-build-memory-tracker
+Memory management server using OpenAI vector stores for semantic search and storage.
+
+**Key Files:**
+- `server.py` - FastMCP server with vector store integration
+- `main.py` - Alternative entry point
+- `.env` - OpenAI API key configuration
+
+**Tools:**
+- `search_memory` - Search memories using semantic similarity
+- `save_memory` - Save new memories to vector store
+
+**Dependencies:**
+- OpenAI API for vector store operations
+- Requires `OPENAI_API_KEY` environment variable
+
+### mcp-build-client-agent-airbnb-memory
+Multi-server MCP client demonstrating advanced patterns with Airbnb search and memory integration.
+
+**Key Files:**
+- `client.py` - Multi-server MCP client implementation
+- `chat_ui.py` - Streamlit-based chat interface
+- `main.py` - Alternative client runner
+- `.env` - OpenAI API key configuration
+
+**Features:**
+- Connects to multiple MCP servers simultaneously
+- Integrates Airbnb listings search (via @openbnb/mcp-server-airbnb)
+- Memory storage and retrieval (via memory tracker server)
+- OpenAI function calling for intelligent tool selection
+- Interactive Streamlit UI
+
+**Architecture:**
+- Client connects to two servers: Airbnb API server + Memory tracker server
+- Combines tools from both servers
+- Uses OpenAI for natural language understanding and tool invocation
+
+**Environment Variables:**
+```
+OPENAI_API_KEY=your_openai_api_key
+```
 
 ## 🔍 Common Commands
 
